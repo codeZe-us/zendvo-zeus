@@ -9,17 +9,23 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@prisma/client": "6.19.2",
     "@tailwindcss/postcss": "^4.1.18",
+    "bcryptjs": "^3.0.3",
     "framer-motion": "^12.29.0",
     "lucide-react": "^0.563.0",
     "next": "16.1.2",
+    "nodemailer": "^7.0.12",
     "postcss": "^8.5.6",
+    "prisma": "6.19.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
+    "@types/nodemailer": "^7.0.9",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
