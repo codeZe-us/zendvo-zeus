@@ -118,3 +118,107 @@ paths:
           description: Invalid token or weak password
         "500":
           description: Internal server error
+  /api/auth/login:
+    post:
+      summary: User login
+      description: Returns access and refresh tokens for valid credentials.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  example: "Password123!"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      accessToken:
+                        type: string
+                      refreshToken:
+                        type: string
+                      user:
+                        type: object
+        "401":
+          description: Invalid credentials
+        "403":
+          description: Account unverified or suspended
+        "423":
+          description: Account locked
+        "429":
+          description: Too many requests
+        "500":
+          description: Internal server error
+
+  /api/auth/refresh:
+    post:
+      summary: Refresh access token
+      description: Returns a new access token using a valid refresh token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refreshToken
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        "200":
+          description: Tokens refreshed
+        "401":
+          description: Invalid or expired refresh token
+
+  /api/auth/logout:
+    post:
+      summary: User logout
+      description: Invalidates the provided refresh token.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refreshToken
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        "200":
+          description: Logged out successfully
+        "400":
+          description: Missing refresh token
+        "401":
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
