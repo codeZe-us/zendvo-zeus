@@ -23,6 +23,8 @@ model User {
   updatedAt          DateTime            @updatedAt
   lastLogin          DateTime?
   emailVerifications EmailVerification[]
+  passwordResets     PasswordReset[]
+  refreshTokens      RefreshToken[]
 }
 
 model EmailVerification {
@@ -37,4 +39,29 @@ model EmailVerification {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+model PasswordReset {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  token     String    @unique
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  usedAt    DateTime?
+  ipAddress String?
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }

@@ -61,3 +61,60 @@ paths:
           description: Too many registration attempts
         "500":
           description: Internal server error
+  /api/auth/forgot-password:
+    post:
+      summary: Request a password reset
+      description: Sends a password reset email if the user exists.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+      responses:
+        "200":
+          description: Success response (always returned for security)
+        "400":
+          description: Invalid email format
+        "429":
+          description: Too many requests
+        "500":
+          description: Internal server error
+
+  /api/auth/reset-password:
+    post:
+      summary: Reset user password
+      description: Resets the password using a valid reset token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+                - password
+              properties:
+                token:
+                  type: string
+                  format: uuid
+                  example: "550e8400-e29b-41d4-a716-446655440000"
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                  example: "NewStrongP@ss123"
+      responses:
+        "200":
+          description: Password reset successfully
+        "400":
+          description: Invalid token or weak password
+        "500":
+          description: Internal server error
